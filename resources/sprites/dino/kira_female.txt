@@ -1,0 +1,36 @@
+{
+    texture: sprites/dino/kira_female.png
+    texture_size: 144, 216
+    {
+        size: 3.0, 3.0
+        frame_size: 24, 24
+        offset: 0, 2
+        loop: true
+        delay: 0.1
+        [Idle] {
+            position: 0, 0
+            frames: 0, 1, 2, 0, 0, 0
+            delay: 0.2
+        }
+        [Walk] {
+            position: 0, 24
+            frame_count: 6
+        }
+        [Jump] {
+            position: 24, 0
+            frame_count: 1
+            loop: false
+        }
+        [Bite] {
+            position: 0, 72
+            frame_count: 3
+            delay: 0.05
+            loop: false
+        }
+        [Fly] {
+            position: 0, 96
+            frame_count: 6
+            loop: false
+        }
+    }
+}

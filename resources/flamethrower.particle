@@ -1,0 +1,28 @@
+{
+    texture: particle.png
+    origin: global
+    acceleration: 0, 5.5, 0
+    [SPAWN] {
+        frequency: 500
+        lifetime: 0.8
+        velocity: -0.4~0.4, -1.8~0.8, 0.1
+        position: -.3~.3, -0.3~0.3, 0
+        color: #FFFFFF
+    }
+    [COLOR] {
+        0.0: #FFFF0000
+        0.1: #FFFF00
+        0.3: #FF0000
+        0.7: #00000080
+        1.0: #00000000
+    }
+    [SIZE] {
+        0.0: 0.1
+        0.5: 0.1
+        1.0: 0.0
+    }
+    [VELOCITY_SCALE] {
+        0.0: 0.0
+        1.0: -10.0
+    }
+}

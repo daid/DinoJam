@@ -1,0 +1,15 @@
+{
+    texture: sprites/characters.png
+    texture_size: 216, 72
+    {
+        size: 2.0, 2.0
+        frame_size: 24, 24
+        offset: 0, 2
+        loop: true
+        delay: 0.2
+        [Idle] {
+            position: 144, 48
+            frames: 0, 1, 2, 1
+        }
+    }
+}

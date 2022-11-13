@@ -1,0 +1,20 @@
+{
+    "maps": [
+        {
+            "fileName": "start.json",
+            "height": 360,
+            "width": 900,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "area1.json",
+            "height": 360,
+            "width": 900,
+            "x": 900,
+            "y": 0
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}
