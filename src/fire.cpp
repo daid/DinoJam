@@ -46,11 +46,6 @@ Flamethrower::Flamethrower(sp::P<sp::Node> parent, sp::Vector2d position, double
 {
     setPosition(position);
     setRotation(direction);
-    auto v = sp::Vector2f(20.0, 0.0);
-    spawn_min.velocity.x += v.x;
-    spawn_min.velocity.y += v.y;
-    spawn_max.velocity.x += v.x;
-    spawn_max.velocity.y += v.y;
 
     fire_start_timer.repeat(0.5);
 }
