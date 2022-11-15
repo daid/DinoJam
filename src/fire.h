@@ -1,6 +1,19 @@
 #pragma once
 
+#include "pawn.h"
 #include <sp2/scene/particleEmitter.h>
+
+
+class FireEffect : public sp::ParticleEmitter
+{
+public:
+    FireEffect(sp::P<sp::Node> parent, sp::Vector2d position);
+
+    void onUpdate(float delta) override;
+
+private:
+    sp::Timer lifetime;
+};
 
 
 class TileFire : public sp::ParticleEmitter
@@ -19,11 +32,14 @@ private:
 class Flamethrower : public sp::ParticleEmitter
 {
 public:
-    Flamethrower(sp::P<sp::Node> parent, sp::Vector2d position, double direction);
+    Flamethrower(sp::P<sp::Node> parent, sp::Vector2d position, double direction, DamageTarget damage_target);
+    virtual ~Flamethrower();
 
     void onFixedUpdate() override;
 private:
     sp::Timer fire_start_timer;
+    bool has_noise = true;
+    DamageTarget damage_target;
 };
 
 class Fireball : public sp::ParticleEmitter

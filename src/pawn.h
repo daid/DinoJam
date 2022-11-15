@@ -25,6 +25,7 @@ public:
     Pawn(sp::P<sp::Node> parent, sp::Vector2d collision_size, DamageTarget damage_target);
 
     void onFixedUpdate() override;
+    void die();
 
     void onCollision(sp::CollisionInfo& info) override;
     bool onDamage(int amount, DamageTarget target, sp::Vector2d source_position) override;
@@ -37,8 +38,11 @@ protected:
 
     bool can_swim = false;
 
+    bool dead = false;
     int on_floor = 0;
+    bool allow_dash = false;
     bool is_jumping = false;
     bool special_anim = false;
+    sp::Timer dash_timer;
     sp::Timer invincible_timer;
 };

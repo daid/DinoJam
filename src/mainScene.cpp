@@ -34,10 +34,10 @@ public:
 
     void onUpdate(float delta) override
     {
-        if (!target) return;
+        if (!pi->pawn) return;
         sp::Vector2d v = sp::Vector2d(getProjectionMatrix().inverse() * sp::Vector2f(1, 1));
 
-        auto target_position = target->getPosition2D();
+        auto target_position = pi->pawn->getPosition2D();
         if (map.rect.size.x > v.x)
             target_position.x = std::clamp(target_position.x, map.rect.position.x + v.x, map.rect.position.x + map.rect.size.x - v.x);
         else
@@ -52,16 +52,14 @@ public:
         else
             setPosition(getPosition2D() * 0.85 + target_position * 0.15);
     }
-
-    sp::P<sp::Node> target;
 };
 
 
-class Bat : public sp::Node
+class Bat : public Damageable
 {
 public:
     Bat(sp::P<sp::Node> parent)
-    : sp::Node(parent)
+    : Damageable(parent)
     {
         setAnimation(sp::SpriteAnimation::load("sprites/bat.txt"));
         animationPlay("Idle");
@@ -76,6 +74,13 @@ public:
         if (obj)
             obj->onDamage(1, DamageTarget::Player, getPosition2D());
     }
+
+    bool onDamage(int amount, DamageTarget target, sp::Vector2d source_position) override
+    {
+        if (target == DamageTarget::Player) return false;
+        delete this;
+        return true;
+    }
 };
 
 
@@ -88,25 +93,23 @@ Scene::Scene()
     pi->abilities.push_back(PlayerDino::Ability::Bite);
     pi->abilities.push_back(PlayerDino::Ability::Swimming);
     pi->abilities.push_back(PlayerDino::Ability::Fire);
+    pi->abilities.push_back(PlayerDino::Ability::Dash);
 
     auto camera = new Camera(getRoot());
     setDefaultCamera(camera);
 
     world.loadMap(getRoot(), "start.json");
 
-    pi->pawn = new PlayerPawn(getRoot());
-    pi->pawn->setPosition(sp::Vector2d(12, 10));
-    camera->target = pi->pawn;
-    pi->dino = new PlayerDino(getRoot());
-    pi->dino->setPosition(sp::Vector2d(16, 10));
-
     auto n = new Bat(getRoot());
-    n->setPosition(sp::Vector2d(15, 10));
+    n->setPosition(sp::Vector2d(15, 4));
+
+    hud = sp::gui::Loader::load("gui/hud.gui", "HUD");
 }
 
 Scene::~Scene()
 {
     sp::Scene::get("INGAME_MENU")->disable();
+    hud.destroy();
 }
 
 void Scene::onUpdate(float delta)
@@ -122,4 +125,46 @@ void Scene::onUpdate(float delta)
             }
         }
     }
+
+    auto hpbar = hud->getWidgetWithID("HPBAR");
+    while(hpbar->getChildren().size() < pi->health_max / 2)
+        sp::gui::Loader::load("gui/hud.gui", "HP", hpbar);
+    int cur_hp = 0;
+    for(auto hp : hpbar->getChildren()) {
+        if (cur_hp + 1 < pi->health)
+            sp::P<sp::gui::Widget>(hp)->setAttribute("texture", "gui/heart.png");
+        else if (cur_hp < pi->health)
+            sp::P<sp::gui::Widget>(hp)->setAttribute("texture", "gui/heart2.png");
+        else
+            sp::P<sp::gui::Widget>(hp)->setAttribute("texture", "gui/heart3.png");
+        cur_hp += 2;
+    }
+
+    if (pi->health <= 0 && !death_timer.isRunning()) {
+        death_timer.start(3);
+    }
+    if (death_timer.isExpired()) {
+        msg("You died.", [this]() {
+            pi->health = pi->health_max;
+            pi->pawn.destroy();
+            pi->dino.destroy();
+            world.loadMap(getRoot(), "start.json");
+            death_timer.stop();
+        });
+    }
+
+    if (hud->getWidgetWithID("MSGBOX")->isVisible() && controller.primary_action.getDown()) {
+        auto func = msg_done_func;
+        hud->getWidgetWithID("MSGBOX")->hide();
+        func();
+        sp::Engine::getInstance()->setPause(false);
+    }
+}
+
+void Scene::msg(const sp::string& msg, std::function<void()> func)
+{
+    sp::Engine::getInstance()->setPause(true);
+    hud->getWidgetWithID("MSGBOX")->show();
+    hud->getWidgetWithID("MSG")->setAttribute("caption", msg);
+    msg_done_func = func;
 }

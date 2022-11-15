@@ -10,6 +10,7 @@
 #include <unordered_set>
 
 #include "player.h"
+#include "enemy/olaf.h"
 
 
 World world;
@@ -48,8 +49,13 @@ void World::loadMap(sp::P<sp::Node> root, sp::string map_name)
     for(auto obj : root->getChildren()) {
         if (obj == root->getScene()->getCamera()) continue;
         if (obj == pi->pawn) continue;
-        if (obj == pi->pawn->dino) continue;
+        if (pi->pawn && obj == pi->pawn->dino) continue;
         obj.destroy();
+    }
+
+    if (!pi->dino && !pi->abilities.empty() && map.rect.contains(sp::Vector2i(pi->dino_location))) {
+        pi->dino = new PlayerDino(root);
+        pi->dino->setPosition(pi->dino_location);
     }
 
     auto json = nlohmann::json::parse(sp::io::ResourceProvider::get("world/" + map_name)->readAll(), nullptr, false);
@@ -104,53 +110,25 @@ void World::loadMap(sp::P<sp::Node> root, sp::string map_name)
                 float height = obj["height"];
                 std::string name = obj["name"];
                 std::string type = obj["type"];
-                sp::Vector2d position{x / 16.0f + width / 32.0f, float(map.rect.size.y) - y / 16.0f - height / 32.0f};
-                /*
+                sp::Vector2d position{x / 18.0f + width / 36.0f, float(map.rect.size.y) - y / 18.0f - height / 36.0f};
+                
                 if (name == "start") {
-                    start_position = position;
-                } else if (name == "goomba") {
-                    new EnemySpawn<Goomba>(getRoot(), position);
-                } else if (name == "goomba2") {
-                    new EnemySpawn<Goomba>(getRoot(), position);
-                    new EnemySpawn<Goomba>(getRoot(), position + sp::Vector2d(1.5, 0));
-                } else if (name == "koopa") {
-                    new EnemySpawn<Koopa, Koopa::Type::Green>(getRoot(), position);
-                } else if (name == "koopared") {
-                    new EnemySpawn<Koopa, Koopa::Type::Red, Koopa::Behaviour::WalkingNoEdge>(getRoot(), position);
-                } else if (name == "koopaparatroopared") {
-                    new EnemySpawn<Koopa, Koopa::Type::ParatroopaRed, Koopa::Behaviour::FlyingUpDown>(getRoot(), position);
-                } else if (name == "piranha") {
-                    new EnemySpawn<PiranhaPlant>(getRoot(), position);
-                } else if (name == "pipeentrance") {
-                    if (width > height)
-                        warp_entrance.push_back({WarpType::PipeTop, position, type});
-                    else
-                        warp_entrance.push_back({WarpType::PipeLeft, position, type});
-                } else if (name == "door") {
-                    warp_entrance.push_back({WarpType::Door, position, type});
-                } else if (name == "pipeexit") {
-                    if (width > height)
-                        warp_exit.push_back({WarpType::PipeTop, position, type});
-                    else
-                        warp_exit.push_back({WarpType::PipeLeft, position, type});
-                } else if (name == "liftup") {
-                    (new Lift(getRoot(), Lift::Type::Up))->setPosition(position);
-                } else if (name == "liftdown") {
-                    (new Lift(getRoot(), Lift::Type::Down))->setPosition(position);
-                } else if (name == "liftupdown") {
-                    (new Lift(getRoot(), Lift::Type::UpDown))->setPosition(position);
-                } else if (name == "liftleftright") {
-                    (new Lift(getRoot(), Lift::Type::LeftRight))->setPosition(position);
+                    if (!pi->pawn) {
+                        pi->pawn = new PlayerPawn(root);
+                        pi->pawn->setPosition(position);
+                    }
+                } else if (name == "playerdino") {
+                    if (!pi->dino && !pi->abilities.empty()) {
+                        pi->dino = new PlayerDino(root);
+                        pi->dino->setPosition(position);
+                    }
+                } else if (name == "olaf") {
+                    (new Olaf(root))->setPosition(position);
                 } else {
                     LOG(Warning, "Unknown level object type:", name);
-                }*/
+                }
             }
         }
-    }
-
-    if (!pi->dino && !pi->abilities.empty() && map.rect.contains(sp::Vector2i(pi->dino_location))) {
-        pi->dino = new PlayerDino(root);
-        pi->dino->setPosition(pi->dino_location);
     }
 }
 

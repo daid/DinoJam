@@ -1,0 +1,28 @@
+[HUD] {
+    stretch: true
+    
+    [HPBAR] {
+        margin: 24
+        layout: horizontal
+    }
+    
+    [MSGBOX] {
+        type: panel
+        alignment: top
+        padding: 10
+        position: 0, 100
+        visible: false
+        
+        [MSG] {
+            type: label
+            caption: You died.
+            scale_to_text: true
+        }
+    }
+}
+
+[HP] {
+    type: image
+    size: 32, 32
+    texture: gui/heart.png
+}
