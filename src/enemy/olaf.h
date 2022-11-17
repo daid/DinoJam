@@ -7,6 +7,11 @@ class Apple : public sp::Node
 {
 public:
     Apple(sp::P<sp::Node> parent);
+
+    void onCollision(sp::CollisionInfo& info) override;
+    void onFixedUpdate() override;
+
+    bool down = false;
 };
 
 class Olaf : public Pawn
@@ -33,4 +38,5 @@ private:
     State state = State::Idle;
     Goal goal = Goal::None;
     double goal_x = 0.0;
+    int apple_eaten = 0;
 };

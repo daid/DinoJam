@@ -33,8 +33,8 @@ TileFire::TileFire(sp::P<sp::Node> parent, sp::Vector2d position)
 {
     sp::audio::Sound::play("sfx/fire.wav");
     setPosition(position);
-    lifetime.start(6.0);
-    spreadstart.start(2.5);
+    lifetime.start(4.0);
+    spreadstart.start(1.5);
 }
 
 void TileFire::onUpdate(float delta)

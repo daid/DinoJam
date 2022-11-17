@@ -15,6 +15,11 @@ Controller::Controller()
     protect_action.setKeys({"left shift", "gamecontroller:0:button:b"});
     special_action.setKeys({"tab", "gamecontroller:0:button:y"});
 
+    primary_action.setLabel("Jump");
+    secondary_action.setLabel("Action");
+    protect_action.setLabel("Mount/Unmount");
+    special_action.setLabel("Switch power");
+
     all.add(&up);
     all.add(&down);
     all.add(&left);

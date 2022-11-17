@@ -38,11 +38,11 @@ public:
         sp::Vector2d v = sp::Vector2d(getProjectionMatrix().inverse() * sp::Vector2f(1, 1));
 
         auto target_position = pi->pawn->getPosition2D();
-        if (map.rect.size.x > v.x)
+        if (map.rect.size.x > v.x * 2.0)
             target_position.x = std::clamp(target_position.x, map.rect.position.x + v.x, map.rect.position.x + map.rect.size.x - v.x);
         else
             target_position.x = map.rect.position.x + map.rect.size.x / 2;
-        if (map.rect.size.y > v.y)
+        if (map.rect.size.y > v.y * 2.0)
             target_position.y = std::clamp(target_position.y, map.rect.position.y + v.y, map.rect.position.y + map.rect.size.y - v.y);
         else
             target_position.y = map.rect.position.y + map.rect.size.y / 2;
@@ -90,10 +90,12 @@ Scene::Scene()
     sp::Scene::get("INGAME_MENU")->enable();
 
     pi = std::make_unique<PlayerInfo>();
+    /*
     pi->abilities.push_back(PlayerDino::Ability::Bite);
     pi->abilities.push_back(PlayerDino::Ability::Swimming);
     pi->abilities.push_back(PlayerDino::Ability::Fire);
     pi->abilities.push_back(PlayerDino::Ability::Dash);
+    //*/
 
     auto camera = new Camera(getRoot());
     setDefaultCamera(camera);

@@ -1,11 +1,52 @@
 #include "olaf.h"
 #include "../player.h"
 #include "../emote.h"
+#include "../mainScene.h"
 
 #include <sp2/graphics/spriteAnimation.h>
 #include <sp2/audio/sound.h>
 #include <sp2/random.h>
+#include <sp2/graphics/textureManager.h>
+#include <sp2/graphics/meshdata.h>
+#include <sp2/collision/2d/circle.h>
 
+
+
+Apple::Apple(sp::P<sp::Node> parent)
+: sp::Node(parent)
+{
+    render_data.type = sp::RenderData::Type::Normal;
+    render_data.order = 99;
+    render_data.texture = sp::texture_manager.get("sprites/apple.png");
+    render_data.shader = sp::Shader::get("internal:basic.shader");
+    render_data.mesh = sp::MeshData::createQuad({1, 1});
+
+    sp::collision::Circle2D shape(0.3f);
+    shape.type = sp::collision::Shape::Type::Sensor;
+    setCollisionShape(shape);
+}
+
+void Apple::onCollision(sp::CollisionInfo& info)
+{
+    if (down) return;
+    if (info.other == pi->pawn) {
+        down = true;
+
+        sp::collision::Circle2D shape(0.3f);
+        shape.setFilterCategory(1);
+        shape.setMaskFilterCategory(1);
+        shape.angular_damping = 0.1;
+        shape.linear_damping = 0.4;
+        setCollisionShape(shape);
+        setAngularVelocity(sp::random(-100, 100));
+    }
+}
+
+void Apple::onFixedUpdate()
+{
+    if (down)
+        setLinearVelocity(getLinearVelocity2D() + sp::Vector2d(0, -1));
+}
 
 Olaf::Olaf(sp::P<sp::Node> parent)
 : Pawn(parent, {1.2, 1.75}, DamageTarget::Enemy)
@@ -44,8 +85,8 @@ void Olaf::onFixedUpdate()
                 goal = Goal::None;
                 for(auto n : getParent()->getChildren()) {
                     sp::P<Apple> apple = n;
-                    if (apple) {
-                        if (std::abs(getPosition2D().y - apple->getPosition2D().y) < 3 && std::abs(getPosition2D().x - apple->getPosition2D().x) < 6) {
+                    if (apple && apple->down) {
+                        if (std::abs(getPosition2D().y - apple->getPosition2D().y) < 3 && std::abs(getPosition2D().x - apple->getPosition2D().x) < 8) {
                             goal = Goal::Apple;
                             goal_x = apple->getPosition2D().x;
                         }
@@ -86,10 +127,27 @@ void Olaf::onFixedUpdate()
                 sp::audio::Sound::play("sfx/chomp.wav");
                 state = State::Biting;
 
-                if (std::abs(getPosition2D().y - pp.y) < 1 && std::abs(getPosition2D().x - pp.x) < 2)
+                if (std::abs(getPosition2D().y - pp.y) < 1.5 && std::abs(getPosition2D().x - pp.x) < 2)
                     pi->onDamage(1, DamageTarget::Player, getPosition2D());
                 break;
             case Goal::Apple:
+                special_anim = true;
+                animationPlay("Bite");
+                sp::audio::Sound::play("sfx/chomp.wav");
+                state = State::Biting;
+
+                for(auto n : getParent()->getChildren()) {
+                    sp::P<Apple> apple = n;
+                    if (apple && apple->down) {
+                        if (std::abs(getPosition2D().y - apple->getPosition2D().y) < 1.5 && std::abs(getPosition2D().x - apple->getPosition2D().x) < 2) {
+                            apple.destroy();
+                            new Emote(this, 26);
+                            apple_eaten += 1;
+                            break;
+                        }
+                    }
+                }
+
                 break;
             }
         }
@@ -103,6 +161,18 @@ void Olaf::onFixedUpdate()
     }
 
     Pawn::onFixedUpdate();
+
+    if (apple_eaten == 3) {
+        pi->abilities.push_back(PlayerDino::Ability::Bite);
+        pi->abilities.push_back(PlayerDino::Ability::Swimming);
+        pi->abilities.push_back(PlayerDino::Ability::Fire);
+        pi->abilities.push_back(PlayerDino::Ability::Dash);
+        pi->dino = new PlayerDino(getParent());
+        pi->dino->setPosition(getPosition2D());
+        sp::P<Scene> scene = getScene();
+        scene->msg("Olaf loves you now,\nyou can ride him!", [](){});
+        delete this;
+    }
 }
 
 void Olaf::onCollision(sp::CollisionInfo& info)

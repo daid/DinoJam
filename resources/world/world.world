@@ -13,6 +13,13 @@
             "width": 900,
             "x": 900,
             "y": 0
+        },
+        {
+            "fileName": "underwatercave.json",
+            "height": 360,
+            "width": 540,
+            "x": -216,
+            "y": 360
         }
     ],
     "onlyShowAdjacentMaps": false,

@@ -35,6 +35,7 @@ void World::init()
         auto height = static_cast<int>(json_map["height"]) / 18;
         auto x = static_cast<int>(json_map["x"]) / 18;
         auto y = static_cast<int>(json_map["y"]) / 18;
+        y = height - y;
         maps.push_back({name, {{x, y}, {width, height}}});
     }
 }
@@ -57,21 +58,20 @@ void World::loadMap(sp::P<sp::Node> root, sp::string map_name)
         pi->dino = new PlayerDino(root);
         pi->dino->setPosition(pi->dino_location);
     }
-
-    auto json = nlohmann::json::parse(sp::io::ResourceProvider::get("world/" + map_name)->readAll(), nullptr, false);
+    auto tileset_json = nlohmann::json::parse(sp::io::ResourceProvider::get("world/tileset.json")->readAll(), nullptr, false);
     std::unordered_set<int> solid_tiles, water_tiles, burn_tiles, platform_tiles;
-    for(auto& tileset : json["tilesets"]) {
-        for(auto& tile : tileset["tiles"]) {
-            int id = static_cast<int>(tile["id"]);
-            for(auto& prop : tile["properties"]) {
-                auto name = static_cast<std::string>(prop["name"]);
-                if (name == "solid") solid_tiles.insert(id);
-                if (name == "water") water_tiles.insert(id);
-                if (name == "platform") platform_tiles.insert(id);
-                if (name == "burnable") burn_tiles.insert(id);
-            }
+    for(auto& tile : tileset_json["tiles"]) {
+        int id = static_cast<int>(tile["id"]);
+        for(auto& prop : tile["properties"]) {
+            auto name = static_cast<std::string>(prop["name"]);
+            if (name == "solid") solid_tiles.insert(id);
+            if (name == "water") water_tiles.insert(id);
+            if (name == "platform") platform_tiles.insert(id);
+            if (name == "burnable") burn_tiles.insert(id);
         }
     }
+
+    auto json = nlohmann::json::parse(sp::io::ResourceProvider::get("world/" + map_name)->readAll(), nullptr, false);
     map.tiles.clear();
     map.tiles.resize(map.rect.size.x * map.rect.size.y);
     int tilemap_order = -10;
@@ -111,7 +111,8 @@ void World::loadMap(sp::P<sp::Node> root, sp::string map_name)
                 std::string name = obj["name"];
                 std::string type = obj["type"];
                 sp::Vector2d position{x / 18.0f + width / 36.0f, float(map.rect.size.y) - y / 18.0f - height / 36.0f};
-                
+                position += sp::Vector2d(map.rect.position);
+
                 if (name == "start") {
                     if (!pi->pawn) {
                         pi->pawn = new PlayerPawn(root);
@@ -124,6 +125,8 @@ void World::loadMap(sp::P<sp::Node> root, sp::string map_name)
                     }
                 } else if (name == "olaf") {
                     (new Olaf(root))->setPosition(position);
+                } else if (name == "apple") {
+                    (new Apple(root))->setPosition(position);
                 } else {
                     LOG(Warning, "Unknown level object type:", name);
                 }
