@@ -54,5 +54,7 @@ public:
     std::vector<PlayerDino::Ability> abilities;
 
     PlayerDino::Ability nextAbility(PlayerDino::Ability);
+    sp::Vector2d getPosition() { if (pawn->dino) return pawn->dino->getPosition2D(); return pawn->getPosition2D(); }
+    bool onDamage(int amount, DamageTarget target, sp::Vector2d source_position) { if (pawn->dino) return pawn->dino->onDamage(amount, target, source_position); return pawn->onDamage(amount, target, source_position); }
 };
 extern std::unique_ptr<PlayerInfo> pi;

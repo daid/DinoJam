@@ -23,13 +23,36 @@
         }
         [Bite] {
             position: 0, 72
-            frame_count: 3
+            frames: 2, 1, 0
             delay: 0.05
             loop: false
         }
-        [Fly] {
+        [Dash] {
             position: 0, 96
             frame_count: 6
+            delay: 0.03
+        }
+        [Fire] {
+            position: 48, 72
+            frame_count: 1
+            loop: false
+        }
+        [SwimIdle] {
+            position: 96, 96
+            frame_count: 1
+        }
+        [SwimMove] {
+            position: 0, 96
+            frame_count: 6
+        }
+        [Hurt] {
+            position: 24, 168
+            frame_count: 3
+            loop: false
+        }
+        [Death] {
+            position: 24, 192
+            frame_count: 5
             loop: false
         }
     }

@@ -1,12 +1,13 @@
 {
-    texture: sprites/characters.png
-    texture_size: 216, 72
+    texture: sprites/TinyFarm_Characters.png
+    texture_size: 24,192
     {
         size: 1.0, 1.0
-        frame_size: 24, 24
-        offset: 0, 2
+        frame_size: 8, 8
+        offset: 0, 0.5
         loop: true
         delay: 0.3
+        line_length: 1
         [Idle] {
             position: 0, 0
             frame_count: 1
@@ -14,12 +15,13 @@
             }
         }
         [Walk] {
-            position: 0, 0
+            position: 0, 16
             frame_count: 2
         }
         [Hurt] {
-            position: 0, 0
-            frame_count: 2
+            position: 0, 8
+            frame_count: 1
+            loop: false
         }
     }
 }
