@@ -3,6 +3,12 @@
 #include "../pawn.h"
 
 
+class Apple : public sp::Node
+{
+public:
+    Apple(sp::P<sp::Node> parent);
+};
+
 class Olaf : public Pawn
 {
 public:

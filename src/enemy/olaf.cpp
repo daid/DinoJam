@@ -41,14 +41,28 @@ void Olaf::onFixedUpdate()
                 goal = Goal::Player;
                 new Emote(this, 29);
             } else {
-                if (sp::random(0, 100) < 50)
-                    goal_x = getPosition2D().x + sp::random(4, 8);
-                else
-                    goal_x = getPosition2D().x - sp::random(4, 8);
+                goal = Goal::None;
+                for(auto n : getParent()->getChildren()) {
+                    sp::P<Apple> apple = n;
+                    if (apple) {
+                        if (std::abs(getPosition2D().y - apple->getPosition2D().y) < 3 && std::abs(getPosition2D().x - apple->getPosition2D().x) < 6) {
+                            goal = Goal::Apple;
+                            goal_x = apple->getPosition2D().x;
+                        }
+                    }
+                }
+                if (goal == Goal::None) {
+                    if (sp::random(0, 100) < 50)
+                        goal_x = getPosition2D().x + sp::random(4, 8);
+                    else
+                        goal_x = getPosition2D().x - sp::random(4, 8);
+                }
                 next_action_timer.start(5);
                 state = State::WalkToGoal;
-                goal = Goal::None;
-                new Emote(this, 0);
+                if (goal == Goal::Apple)
+                    new Emote(this, 22);
+                else
+                    new Emote(this, 0);
             }
         }
         break;
