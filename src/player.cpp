@@ -70,6 +70,7 @@ void PlayerPawn::onFixedUpdate()
         move_request.x = controller.right.getValue() - controller.left.getValue();
         move_request.y = controller.up.getValue() - controller.down.getValue();
         jump_request = controller.primary_action.getDown();
+        high_jump_request = controller.primary_action.get();
 
         if (controller.protect_action.getDown()) {
             getScene()->queryCollision({getPosition2D(), {0, 0}}, [this](sp::P<sp::Node> node) {
@@ -134,6 +135,7 @@ void PlayerDino::onFixedUpdate()
         move_request.x = controller.right.getValue() - controller.left.getValue();
         move_request.y = controller.up.getValue() - controller.down.getValue();
         jump_request = controller.primary_action.getDown();
+        high_jump_request = controller.primary_action.get();
 
         if (controller.special_action.getDown() && (on_floor || (can_swim && in_water))) {
             auto flags = animationGetFlags();

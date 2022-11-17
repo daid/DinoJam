@@ -10,6 +10,7 @@ public:
 
     void onFixedUpdate() override;
 
+    void onCollision(sp::CollisionInfo& info) override;
 private:
     sp::Timer next_action_timer;
     enum class State {

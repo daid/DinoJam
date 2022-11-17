@@ -8,9 +8,9 @@
         layout: vertical
         alignment: center
 
-        [EXIT] {
+        [SUICIDE] {
             @ref: BUTTON
-            caption: Exit
+            caption: Suicide
 
             {
                 type: keynavigator
@@ -18,6 +18,11 @@
                 stretch: true
                 select: PRIMARY
             }
+        }
+
+        [EXIT] {
+            @ref: BUTTON
+            caption: Exit
         }
 
         [BACK] {

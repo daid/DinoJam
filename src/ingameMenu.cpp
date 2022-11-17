@@ -1,5 +1,6 @@
 #include "ingameMenu.h"
 #include "main.h"
+#include "player.h"
 
 #include <sp2/engine.h>
 #include <sp2/graphics/gui/loader.h>
@@ -18,6 +19,19 @@ void IngameMenuScene::onUpdate(float delta)
         if (getRootWidget()->getChildren().empty())
         {
             auto gui = sp::gui::Loader::load("gui/ingame_menu.gui", "INGAME_MENU", getRootWidget());
+            gui->getWidgetWithID("SUICIDE")->setEventCallback([this](sp::Variant)
+            {
+                pi->health = 0;
+                if (pi->pawn) {
+                    if (pi->pawn->dino)
+                        pi->pawn->dino->die();
+                    pi->pawn->die();
+                }
+                for(auto node : getRootWidget()->getChildren())
+                    node.destroy();
+                sp::Engine::getInstance()->setGameSpeed(1.0);
+            });
+
             gui->getWidgetWithID("EXIT")->setEventCallback([this](sp::Variant)
             {
                 exit = true;

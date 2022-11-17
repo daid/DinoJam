@@ -35,6 +35,7 @@ protected:
     bool in_water = false;
     sp::Vector2d move_request;
     bool jump_request = false;
+    bool high_jump_request = true;
 
     bool can_swim = false;
 

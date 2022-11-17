@@ -42,9 +42,9 @@ void Olaf::onFixedUpdate()
                 new Emote(this, 29);
             } else {
                 if (sp::random(0, 100) < 50)
-                    goal_x = getPosition2D().x + sp::random(3, 5);
+                    goal_x = getPosition2D().x + sp::random(4, 8);
                 else
-                    goal_x = getPosition2D().x - sp::random(3, 5);
+                    goal_x = getPosition2D().x - sp::random(4, 8);
                 next_action_timer.start(5);
                 state = State::WalkToGoal;
                 goal = Goal::None;
@@ -89,4 +89,15 @@ void Olaf::onFixedUpdate()
     }
 
     Pawn::onFixedUpdate();
+}
+
+void Olaf::onCollision(sp::CollisionInfo& info)
+{
+    Pawn::onCollision(info);
+    if (std::abs(info.normal.y) < 0.1 && info.other && info.other->isSolid()) {
+        if ((move_request.x < 0 && info.normal.x < 0) || (move_request.x > 0 && info.normal.x > 0)) {
+            jump_request = true;
+            high_jump_request = false;
+        }
+    }
 }

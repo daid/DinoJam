@@ -44,7 +44,7 @@ void Pawn::onFixedUpdate()
         if ((in_water && can_swim) || dash_timer.isRunning()) {
             is_jumping = false;
         } else {
-            if (is_jumping && velocity.y > 0 && controller.primary_action.get()) {
+            if (is_jumping && velocity.y > 0 && high_jump_request) {
                 velocity.y -= 0.5;
             } else {
                 is_jumping = false;
