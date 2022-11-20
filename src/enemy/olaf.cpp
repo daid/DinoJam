@@ -48,8 +48,8 @@ void Apple::onFixedUpdate()
         setLinearVelocity(getLinearVelocity2D() + sp::Vector2d(0, -1));
 }
 
-Olaf::Olaf(sp::P<sp::Node> parent)
-: Pawn(parent, {1.2, 1.75}, DamageTarget::Enemy)
+Olaf::Olaf(sp::P<sp::Node> parent, std::string key)
+: Pawn(parent, {1.2, 1.75}, DamageTarget::Enemy), key(key)
 {
     setAnimation(sp::SpriteAnimation::load("sprites/dino/olaf_male.txt"));
     animationPlay("Idle");
@@ -164,13 +164,11 @@ void Olaf::onFixedUpdate()
 
     if (apple_eaten == 3) {
         pi->abilities.push_back(PlayerDino::Ability::Bite);
-        pi->abilities.push_back(PlayerDino::Ability::Swimming);
-        pi->abilities.push_back(PlayerDino::Ability::Fire);
-        pi->abilities.push_back(PlayerDino::Ability::Dash);
         pi->dino = new PlayerDino(getParent());
         pi->dino->setPosition(getPosition2D());
         sp::P<Scene> scene = getScene();
         scene->msg("Olaf loves you now,\nyou can ride him!", [](){});
+        pi->flags.emplace(key);
         delete this;
     }
 }

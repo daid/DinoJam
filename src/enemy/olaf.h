@@ -17,7 +17,7 @@ public:
 class Olaf : public Pawn
 {
 public:
-    Olaf(sp::P<sp::Node> parent);
+    Olaf(sp::P<sp::Node> parent, std::string key);
 
     void onFixedUpdate() override;
 
@@ -39,4 +39,5 @@ private:
     Goal goal = Goal::None;
     double goal_x = 0.0;
     int apple_eaten = 0;
+    std::string key;
 };

@@ -8,10 +8,15 @@
 #include <sp2/audio/audioSource.h>
 
 
+static sp::Timer fire_sfx_delay;
+
 FireEffect::FireEffect(sp::P<sp::Node> parent, sp::Vector2d position)
 : sp::ParticleEmitter(parent, "tilefire.particle")
 {
-    sp::audio::Sound::play("sfx/fire.wav");
+    if (!fire_sfx_delay.isRunning() || fire_sfx_delay.isExpired()) {
+        sp::audio::Sound::play("sfx/fire.wav");
+        fire_sfx_delay.start(2.0);
+    }
     setPosition(position);
     lifetime.start(1.5);
 }
@@ -23,7 +28,6 @@ void FireEffect::onUpdate(float delta)
     if (lifetime.isExpired()) {
         stopSpawn();
         auto_destroy = true;
-        map.main_tilemap->setTile(sp::Vector2i(getPosition2D()) - map.rect.position, -1);
     }
 }
 
@@ -31,7 +35,10 @@ void FireEffect::onUpdate(float delta)
 TileFire::TileFire(sp::P<sp::Node> parent, sp::Vector2d position)
 : sp::ParticleEmitter(parent, "tilefire.particle")
 {
-    sp::audio::Sound::play("sfx/fire.wav");
+    if (!fire_sfx_delay.isRunning() || fire_sfx_delay.isExpired()) {
+        sp::audio::Sound::play("sfx/fire.wav");
+        fire_sfx_delay.start(2.0);
+    }
     setPosition(position);
     lifetime.start(4.0);
     spreadstart.start(1.5);
@@ -50,7 +57,7 @@ void TileFire::onUpdate(float delta)
     if (lifetime.isExpired()) {
         stopSpawn();
         auto_destroy = true;
-        map.main_tilemap->setTile(sp::Vector2i(getPosition2D()) - map.rect.position, -1);
+        map.main_tilemap->setTile(sp::Vector2i(std::floor(getPosition2D().x), std::floor(getPosition2D().y)) - map.rect.position, -1);
     }
 }
 
@@ -60,7 +67,7 @@ bool TileFire::tryStartFireAt(sp::P<sp::Node> root, sp::Vector2d position)
     if (!tile.burnable || tile.water)
         return false;
     tile.burnable = false;
-    auto posi = sp::Vector2i(position);
+    auto posi = sp::Vector2i(std::floor(position.x), std::floor(position.y));
     new TileFire(root, sp::Vector2d(posi) + sp::Vector2d(0.5, 0.5));
     return true;
 }
@@ -82,7 +89,7 @@ public:
     }
     int active_count = 0;
 
-    float volume = 0.25;
+    float volume = 0.2;
     float sample = 0.0f;
     int delay = 0;
 };

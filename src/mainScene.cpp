@@ -55,42 +55,13 @@ public:
 };
 
 
-class Bat : public Damageable
-{
-public:
-    Bat(sp::P<sp::Node> parent)
-    : Damageable(parent)
-    {
-        setAnimation(sp::SpriteAnimation::load("sprites/bat.txt"));
-        animationPlay("Idle");
-        auto shape = sp::collision::Box2D(1.0, 1.0);
-        shape.type = sp::collision::Shape::Type::Kinematic;
-        setCollisionShape(shape);
-    }
-
-    void onCollision(sp::CollisionInfo& info) override
-    {
-        sp::P<Damageable> obj = info.other;
-        if (obj)
-            obj->onDamage(1, DamageTarget::Player, getPosition2D());
-    }
-
-    bool onDamage(int amount, DamageTarget target, sp::Vector2d source_position) override
-    {
-        if (target == DamageTarget::Player) return false;
-        delete this;
-        return true;
-    }
-};
-
-
 Scene::Scene()
 : sp::Scene("MAIN")
 {
     sp::Scene::get("INGAME_MENU")->enable();
 
     pi = std::make_unique<PlayerInfo>();
-    /*
+    //*
     pi->abilities.push_back(PlayerDino::Ability::Bite);
     pi->abilities.push_back(PlayerDino::Ability::Swimming);
     pi->abilities.push_back(PlayerDino::Ability::Fire);
@@ -101,9 +72,6 @@ Scene::Scene()
     setDefaultCamera(camera);
 
     world.loadMap(getRoot(), "start.json");
-
-    auto n = new Bat(getRoot());
-    n->setPosition(sp::Vector2d(15, 4));
 
     hud = sp::gui::Loader::load("gui/hud.gui", "HUD");
 }
@@ -119,7 +87,7 @@ void Scene::onUpdate(float delta)
     if (pi->pawn) {
         auto position = pi->pawn->getPosition2D();
         if (pi->pawn->dino) position = pi->pawn->dino->getPosition2D();
-        if (!map.rect.contains(sp::Vector2i(position))) {
+        if (!map.rect.contains(sp::Vector2i(std::floor(position.x), std::floor(position.y)))) {
             if (world.loadMapAt(getRoot(), position)) {
                 getCamera()->onUpdate(0); // force the camera to update to prevent 1 frame glitch
             } else {

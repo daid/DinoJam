@@ -20,6 +20,20 @@
             "width": 540,
             "x": -216,
             "y": 360
+        },
+        {
+            "fileName": "longleft.json",
+            "height": 720,
+            "width": 540,
+            "x": -540,
+            "y": -360
+        },
+        {
+            "fileName": "leftcave.json",
+            "height": 360,
+            "width": 540,
+            "x": -1080,
+            "y": 0
         }
     ],
     "onlyShowAdjacentMaps": false,

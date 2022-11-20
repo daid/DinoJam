@@ -23,10 +23,8 @@ void Pawn::onFixedUpdate()
     invincible_timer.isExpired();
     dash_timer.isExpired();
 
-    auto posi = sp::Vector2i(getPosition2D()) - map.rect.position;
-    posi.x = std::clamp(posi.x, 0, map.rect.size.x - 1);
-    posi.y = std::clamp(posi.y, 0, map.rect.size.y - 1);
-    auto new_water = map.tiles[posi.x + posi.y * map.rect.size.x].water;
+    auto tileflags = map.tileAt(getPosition2D());
+    auto new_water = tileflags.water;
     if (new_water != in_water) {
         in_water = new_water;
         if (new_water) {

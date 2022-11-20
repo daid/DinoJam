@@ -2,6 +2,8 @@
 
 #include "pawn.h"
 
+#include <unordered_set>
+
 
 class Flamethrower;
 class PlayerDino : public Pawn
@@ -52,6 +54,10 @@ public:
     sp::P<PlayerDino> dino;
     sp::Vector2d dino_location{-100000, -100000};
     std::vector<PlayerDino::Ability> abilities;
+
+    int coins = 0;
+    int keys = 0;
+    std::unordered_set<std::string> flags;
 
     PlayerDino::Ability nextAbility(PlayerDino::Ability);
     sp::Vector2d getPosition() { if (pawn->dino) return pawn->dino->getPosition2D(); return pawn->getPosition2D(); }

@@ -1,0 +1,20 @@
+{
+    texture: tiles.png
+    texture_size: 360,162
+    {
+        size: 1.0, 1.0
+        frame_size: 18, 18
+        offset: 0, 0
+        loop: true
+        delay: 0.5
+        [Idle] {
+            position: 126, 18
+            frame_count: 1
+        }
+        [Block] {
+            size: 2.0, 2.0
+            position: 144, 18
+            frame_count: 1
+        }
+    }
+}
