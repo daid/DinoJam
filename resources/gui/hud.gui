@@ -6,6 +6,24 @@
         layout: horizontal
     }
     
+    {
+        margin: 24
+        alignment: topright
+        layout: horizontal
+        [COINS] {
+            type: label
+            caption: 100x
+            text_size: 20
+            color: #000000
+            scale_to_text: true
+        }
+        {
+            type: image
+            size: 32, 32
+            texture: gui/coin.png
+        }
+    }
+    
     [MSGBOX] {
         type: panel
         alignment: top

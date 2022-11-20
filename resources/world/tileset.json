@@ -1003,6 +1003,42 @@
                  "type":"int",
                  "value":1
                 }]
+        }, 
+        {
+         "id":161,
+         "properties":[
+                {
+                 "name":"platform",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":162,
+         "properties":[
+                {
+                 "name":"platform",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":163,
+         "properties":[
+                {
+                 "name":"platform",
+                 "type":"int",
+                 "value":1
+                }]
+        }, 
+        {
+         "id":164,
+         "properties":[
+                {
+                 "name":"platform",
+                 "type":"int",
+                 "value":1
+                }]
         }],
  "tilewidth":18,
  "type":"tileset",

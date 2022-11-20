@@ -61,7 +61,7 @@ Scene::Scene()
     sp::Scene::get("INGAME_MENU")->enable();
 
     pi = std::make_unique<PlayerInfo>();
-    //*
+    /*
     pi->abilities.push_back(PlayerDino::Ability::Bite);
     pi->abilities.push_back(PlayerDino::Ability::Swimming);
     pi->abilities.push_back(PlayerDino::Ability::Fire);
@@ -122,6 +122,7 @@ void Scene::onUpdate(float delta)
             death_timer.stop();
         });
     }
+    hud->getWidgetWithID("COINS")->setAttribute("caption", sp::string(pi->coins) + "x");
 
     if (hud->getWidgetWithID("MSGBOX")->isVisible() && controller.primary_action.getDown()) {
         auto func = msg_done_func;

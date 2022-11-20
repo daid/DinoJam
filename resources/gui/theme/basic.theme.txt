@@ -3,6 +3,7 @@
     font: gui/theme/Roboto-Medium.ttf
     size: 30
     [label] {
+        color: #6f3e43
         [menu_menu_title] {
             font: gui/theme/Roboto-Black.ttf
             size: 150
@@ -10,17 +11,18 @@
     }
     [button.forground] {
         font: gui/theme/Roboto-Black.ttf
-        color.hovered: #808080
+        color: #6f3e43
+        color.hovered: #434a5f
     }
     [button.background] {
         image: gui/theme/pixel.png
-        color: #404040
+        color: #cb815e
         sound: gui/theme/buttonDown.wav
         sound.hovered: gui/theme/buttonUp.wav
     }
     [panel] {
-        image: gui/theme/square_filled.png#pixel
-		color: #FFFFFFA0
+        image: gui/theme/pixel.png
+		color: #cb815eA0
 		size: 8
         [overlay] {
             image: gui/theme/pixel.png
@@ -29,7 +31,7 @@
     }
     [navigator] {
         image: gui/theme/square.png#pixel
-		color: #FFFF00AA
+		color: #345551AA
 		size: 10
     }
     [progressbar] {

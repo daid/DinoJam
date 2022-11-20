@@ -233,6 +233,7 @@ int main(int argc, char** argv)
     scene_layer->addRenderPass(new sp::CollisionRenderPass());
 #endif
     window->addLayer(scene_layer);
+    window->setClearColor(sp::Color(0xdff6f5));
 
     world.init();
 

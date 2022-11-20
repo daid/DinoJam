@@ -13,6 +13,8 @@
 #include "pickup.h"
 #include "enemy/olaf.h"
 #include "enemy/mort.h"
+#include "enemy/nico.h"
+#include "enemy/doux.h"
 #include "enemy/bat.h"
 
 
@@ -139,7 +141,11 @@ void World::loadMap(sp::P<sp::Node> root, sp::string map_name)
                     (new Olaf(root, key))->setPosition(position);
                 } else if (name == "mort") {
                     (new Mort(root, key))->setPosition(position);
-                } else if (name == "mort") {
+                } else if (name == "nico") {
+                    (new Nico(root, key))->setPosition(position);
+                } else if (name == "doux") {
+                    (new Doux(root, key))->setPosition(position);
+                } else if (name == "bat") {
                     (new Bat(root))->setPosition(position);
                 } else if (name == "apple") {
                     (new Apple(root))->setPosition(position);

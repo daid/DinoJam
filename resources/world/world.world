@@ -34,6 +34,41 @@
             "width": 540,
             "x": -1080,
             "y": 0
+        },
+        {
+            "fileName": "toadstoolzone.json",
+            "height": 360,
+            "width": 900,
+            "x": 900,
+            "y": -360
+        },
+        {
+            "fileName": "startup.json",
+            "height": 360,
+            "width": 900,
+            "x": 0,
+            "y": -360
+        },
+        {
+            "fileName": "leftlake.json",
+            "height": 360,
+            "width": 540,
+            "x": -1080,
+            "y": -360
+        },
+        {
+            "fileName": "underwaterpipes.json",
+            "height": 360,
+            "width": 540,
+            "x": 324,
+            "y": 360
+        },
+        {
+            "fileName": "theend.json",
+            "height": 360,
+            "width": 540,
+            "x": 324,
+            "y": 720
         }
     ],
     "onlyShowAdjacentMaps": false,

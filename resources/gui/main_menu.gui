@@ -5,7 +5,7 @@
         alignment: top
         type: label
         theme_data: menu_menu_title
-        caption: Game Title
+        caption: 4Dino
         scale_to_text: true
     }
 
@@ -122,6 +122,44 @@
         {
             @ref: CREDITS_LINE
             caption: https://fonts.google.com/specimen/Roboto
+        }
+
+        {
+            @ref: CREDITS_TITLE
+            caption: Graphics:
+        }
+        {
+            @ref: CREDITS_LINE
+            caption: Tiles&Emotes: https://kenney.nl/
+        }
+        {
+            @ref: CREDITS_LINE
+            caption: Dinos: https://demching.itch.io/dino-family
+        }
+        {
+            @ref: CREDITS_LINE
+            caption: Player: https://gvituri.itch.io/tiny-ranch
+        }
+
+        {
+            @ref: CREDITS_TITLE
+            caption: Sound effects:
+        }
+        {
+            @ref: CREDITS_LINE
+            caption: Bite sound: https://freesound.org/people/maugusto_sfx/sounds/521253/
+        }
+        {
+            @ref: CREDITS_LINE
+            caption: Fire sound: https://freesound.org/people/EminYILDIRIM/sounds/540831/
+        }
+        {
+            @ref: CREDITS_LINE
+            caption: Splash sound: https://freesound.org/people/SiliconeSound/sounds/609428/
+        }
+        {
+            @ref: CREDITS_LINE
+            caption: Rest: generated with https://sfxr.me/
         }
 
         {
